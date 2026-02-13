@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julian 🌸 My Love Garden</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', cursive;
+}
+
+body{
+background: linear-gradient(to top, #d4fc79, #96e6a1);
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+position:relative;
+transition:1s;
+}
+
+/* Floating petals */
+.petal{
+position:fixed;
+font-size:20px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh) rotate(0deg);opacity:1;}
+100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+/* Glass Card */
+.container{
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:25px;
+box-shadow:0 8px 30px rgba(0,0,0,0.2);
+width:90%;
+max-width:500px;
+text-align:center;
+transition:1s;
+}
+
+/* Video */
+#loveVideo{
+width:100%;
+max-height:250px;
+border-radius:20px;
+margin-bottom:15px;
+box-shadow:0 0 25px rgba(255,105,180,0.6);
+}
+
+/* Text */
+h1{
+font-size:2em;
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+p{
+color:#2e7d32;
+margin-bottom:15px;
+}
+
+/* Buttons */
+button{
+padding:12px 25px;
+font-size:1em;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+margin:10px;
+}
+
+#yesBtn{
+background:#ff4081;
+color:white;
+}
+
+#noBtn{
+background:white;
+color:#ff4081;
+position:absolute;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+/* Envelope */
+.envelope{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:300px;
+height:200px;
+background:#fff;
+border-radius:10px;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:0.6s;
+z-index:5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="mainContent">
+
+<h1>Julian 🌸</h1>
+
+<video id="loveVideo" autoplay muted loop playsinline controls>
+<source src="./julian.video.mp4" type="video/mp4">
+</video>
+
+<p>
+My beautiful flower 🌷<br>
+You make my world bloom in ways I never imagined.
+</p>
+
+<h2 style="color:#2e7d32;">Will you be my VAL? 💕</h2>
+
+<div style="position:relative;height:100px;">
+<button id="yesBtn">YES 🌹</button>
+<button id="noBtn">NO 🍃</button>
+</div>
+
+</div>
+
+<script>
+
+/* Continuous Falling Petals */
+function createPetal(){
+const petal=document.createElement("div");
+petal.className="petal";
+petal.innerHTML=Math.random()>0.5?"🌸":"🌼";
+petal.style.left=Math.random()*100+"vw";
+petal.style.animationDuration=(Math.random()*5+5)+"s";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),10000);
+}
+setInterval(createPetal,500);
+
+/* Button Logic */
+let noClicks=0;
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+
+/* Make NO run away */
+function moveNo(){
+const maxX=window.innerWidth-noBtn.offsetWidth;
+const maxY=window.innerHeight-noBtn.offsetHeight;
+noBtn.style.position="fixed";
+noBtn.style.left=Math.random()*maxX+"px";
+noBtn.style.top=Math.random()*maxY+"px";
+}
+
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("touchstart",function(e){
+e.preventDefault();
+moveNo();
+});
+
+noBtn.addEventListener("click",function(e){
+e.preventDefault();
+moveNo();
+noClicks++;
+yesBtn.style.transform=`scale(${1+noClicks*0.15})`;
+});
+
+/* YES CLICK → LOVE LETTER */
+yesBtn.addEventListener("click",()=>{
+
+document.getElementById("mainContent").style.opacity="0";
+document.body.style.background="linear-gradient(to top, #fbc2eb, #a6c1ee)";
+
+/* Create Envelope */
+const envelope=document.createElement("div");
+envelope.className="envelope";
+envelope.innerHTML="💌 Click to Open";
+document.body.appendChild(envelope);
+
+envelope.addEventListener("click",()=>{
+
+envelope.innerHTML="";
+envelope.style.height="380px";
+
+/* Letter */
+const letter=document.createElement("div");
+letter.style.padding="20px";
+letter.style.fontFamily="cursive";
+letter.style.color="#333";
+letter.style.fontSize="16px";
+letter.style.textAlign="left";
+letter.style.whiteSpace="pre-line";
+letter.style.opacity="0";
+letter.style.transition="1s";
+
+envelope.appendChild(letter);
+
+const message=`My Dearest Julian,
+
+From the moment you came into my life,
+everything started to feel brighter.
+
+You are my peace.
+My happiness.
+My answered prayer.
+
+Choosing you is the easiest decision
+I will ever make.
+
+Today, tomorrow, and always…
+I choose you. 🌸
+
+Forever yours,
+Paul ❤️`;
+
+let i=0;
+function typeLetter(){
+if(i<message.length){
+letter.innerHTML+=message.charAt(i);
+i++;
+setTimeout(typeLetter,35);
+}
+}
+
+letter.style.opacity="1";
+typeLetter();
+
+/* Extra Petal Storm */
+for(let i=0;i<60;i++){
+setTimeout(()=>{
+const petal=document.createElement("div");
+petal.className="petal";
+petal.innerHTML="🌸";
+petal.style.left=Math.random()*100+"vw";
+petal.style.animationDuration="6s";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),6000);
+},i*120);
+}
+
+});
+});
+
+</script>
+
+</body>
+</html>
